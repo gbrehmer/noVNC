@@ -2635,7 +2635,7 @@ RFB.messages = {
         const buff = sock._sQ;
         const offset = sock._sQlen;
         let a = 0;
-        switch(disp._rotate){
+        switch (disp._rotate) {
             case 'right':
                 a = x;
                 x = y;
