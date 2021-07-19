@@ -3381,9 +3381,9 @@ describe('Remote Frame Buffer Protocol Client', function () {
                                                                            20, 40, 0x0);
 
                     expect(keyEvent).to.have.been.calledTwice;
-                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock,
                                                                        keysym, 1);
-                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock,
                                                                         keysym, 0);
 
                     expect(keyEvent.firstCall).to.have.been.calledBefore(pointerEvent.secondCall);
@@ -3421,9 +3421,9 @@ describe('Remote Frame Buffer Protocol Client', function () {
                                                                            10, 20, 0x0);
 
                     expect(keyEvent).to.have.been.calledTwice;
-                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock,
                                                                        keysym, 1);
-                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock,
                                                                         keysym, 0);
 
                     expect(keyEvent.firstCall).to.have.been.calledBefore(pointerEvent.secondCall);
@@ -3465,9 +3465,9 @@ describe('Remote Frame Buffer Protocol Client', function () {
                                                                             20, 40, 0x0);
 
                     expect(keyEvent).to.have.been.calledTwice;
-                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock,
                                                                        keysym, 1);
-                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock,
                                                                         keysym, 0);
 
                     expect(keyEvent.firstCall).to.have.been.calledBefore(pointerEvent.secondCall);
@@ -3522,9 +3522,9 @@ describe('Remote Frame Buffer Protocol Client', function () {
                                                                            20, 40, 0x0);
 
                     expect(keyEvent).to.have.been.calledTwice;
-                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.firstCall).to.have.been.calledWith(client._sock,
                                                                        keysym, 1);
-                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(keyEvent.secondCall).to.have.been.calledWith(client._sock,
                                                                         keysym, 0);
 
                     expect(keyEvent.firstCall).to.have.been.calledBefore(pointerEvent.secondCall);
@@ -3564,11 +3564,11 @@ describe('Remote Frame Buffer Protocol Client', function () {
                                                                            20, 40, 0x0);
 
                     expect(qemuKeyEvent).to.have.been.calledTwice;
-                    expect(qemuKeyEvent.firstCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(qemuKeyEvent.firstCall).to.have.been.calledWith(client._sock,
                                                                            keysym,
                                                                            true,
                                                                            code);
-                    expect(qemuKeyEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
+                    expect(qemuKeyEvent.secondCall).to.have.been.calledWith(client._sock,
                                                                             keysym,
                                                                             false,
                                                                             code);
