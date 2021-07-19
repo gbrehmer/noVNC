@@ -2855,7 +2855,7 @@ describe('Remote Frame Buffer Protocol Client', function () {
                 expect(pointerEvent).to.have.been.calledTwice;
                 expect(pointerEvent.firstCall).to.have.been.calledWith(client._sock, client._display,
                                                                        10, 10, 1<<4);
-                expect(pointerEvent.secondCall).to.have.been.calledWith(client._sock,
+                expect(pointerEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
                                                                         10, 10, 0);
             });
 
@@ -3333,7 +3333,7 @@ describe('Remote Frame Buffer Protocol Client', function () {
                     gestureStart('twodrag', 30, 50, 0, 0);
 
                     expect(pointerEvent).
-                        to.have.been.calledOnceWith(client._sock, 30, 50, 0x0);
+                        to.have.been.calledOnceWith(client._sock, client._display, 30, 50, 0x0);
 
                     pointerEvent.resetHistory();
 
@@ -3377,7 +3377,7 @@ describe('Remote Frame Buffer Protocol Client', function () {
                                                                            20, 40, 0x0);
                     expect(pointerEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
                                                                             20, 40, bmask);
-                    expect(pointerEvent.thirdCall).to.have.been.calledWith(client._sock,
+                    expect(pointerEvent.thirdCall).to.have.been.calledWith(client._sock, client._display,
                                                                            20, 40, 0x0);
 
                     expect(keyEvent).to.have.been.calledTwice;
@@ -3518,7 +3518,7 @@ describe('Remote Frame Buffer Protocol Client', function () {
                                                                            20, 40, 0x0);
                     expect(pointerEvent.secondCall).to.have.been.calledWith(client._sock, client._display,
                                                                             20, 40, bmask);
-                    expect(pointerEvent.thirdCall).to.have.been.calledWith(client._sock,
+                    expect(pointerEvent.thirdCall).to.have.been.calledWith(client._sock, client._display,
                                                                            20, 40, 0x0);
 
                     expect(keyEvent).to.have.been.calledTwice;
