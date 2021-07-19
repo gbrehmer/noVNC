@@ -327,10 +327,10 @@ export default class Display {
             });
         } else {
             this._setFillColor(color);
-            var x0;
-            var y0;
-            var w0;
-            var h0;
+            let x0;
+            let y0;
+            let w0;
+            let h0;
             if (this._rotate === 'right') {
                 y0 = x;
                 x0 = this._fbWidth - y - 1 - height;
@@ -381,18 +381,19 @@ export default class Display {
             this._drawCtx.msImageSmoothingEnabled = false;
             this._drawCtx.imageSmoothingEnabled = false;
 
+            let a = 0;
             if (this._rotate === 'right') {
-                var a = oldX;
+                a = oldX;
                 oldX = this._fbWidth - oldY - 1 - h;
                 oldY = a;
                 a = newX;
                 newX = this._fbWidth - newY - 1;
                 newY = a;
             } else if (this._rotate === 'left') {
-                var a = old_y;
+                a = oldY;
                 oldY = this._fbHeight - oldX - 1 - w;
                 oldX = a;
-                var a = new_y;
+                a = newY;
                 newY = this._fbHeight - newX - 1;
                 newX = a;
             } else if (this._rotate === 'double') {
@@ -454,19 +455,20 @@ export default class Display {
     }
 
     drawImage(img, x, y) {
-        var x0 = x;
-        var y0 = y;
+        let x0 = x;
+        let y0 = y;
+        let a = 0;
         if (this._rotate === 'right') {
-            var a = x0;
-            x0 = this._fb_width - y0;
+            a = x0;
+            x0 = this._fbWidth - y0;
             y0 = a;
         } else if (this._rotate === 'left') {
-            var a = y0;
-            y0 = this._fb_height - x0;
+            a = y0;
+            y0 = this._fbHeight - x0;
             x0 = a;
         } else if (this._rotate === 'double') {
-            y0 = this._fb_height - y0;
-            x0 = this._fb_width - x0;
+            y0 = this._fbHeight - y0;
+            x0 = this._fbWidth - x0;
         }
         this._drawCtx.drawImage(img, x0, y0);
         this._damage(x0, y0, img.width, img.height);

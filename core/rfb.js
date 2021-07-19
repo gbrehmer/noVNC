@@ -291,8 +291,6 @@ export default class RFB extends EventTargetMixin {
     set rotate(rotate) { this._rotate = rotate; }
     get scale() { return this._scale; }
     set scale(scale) { this._scale = scale; }
-    set logLevel(level) { Log.init_logging(level); }
-    get logLevel() { return Log.get_logging; }
 
     get clipViewport() { return this._clipViewport; }
     set clipViewport(viewport) {
@@ -1780,7 +1778,7 @@ export default class RFB extends EventTargetMixin {
         return true;
     }
 
-    get_display() {
+    getDisplay() {
         return this._display;
     }
 
@@ -2636,20 +2634,21 @@ RFB.messages = {
     pointerEvent(sock, disp, x, y, mask) {
         const buff = sock._sQ;
         const offset = sock._sQlen;
+        let a = 0;
         switch(disp._rotate) {
             case 'right':
-                var a = x;
+                a = x;
                 x = y;
-                y = disp._fb_width - a - 1;
+                y = disp._fbWidth - a - 1;
                 break;
             case 'left':
-                var a = x;
-                x = disp._fb_height - y - 1;
+                a = x;
+                x = disp._fbHeight - y - 1;
                 y = a;
                 break;
             case 'double':
-                x = disp._fb_width - x - 1;
-                y = disp._fb_height - y - 1;
+                x = disp._fbWidth - x - 1;
+                y = disp._fbHeight - y - 1;
                 break;
             default:
         }
