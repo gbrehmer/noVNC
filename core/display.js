@@ -11,7 +11,7 @@ import Base64 from "./base64.js";
 import { toSigned32bit } from './util/int.js';
 
 export default class Display {
-    constructor(target) {
+    constructor(target, rotate) {
         this._drawCtx = null;
 
         this._renderQ = [];  // queue drawing actions for in-oder rendering
@@ -20,6 +20,7 @@ export default class Display {
         // the full frame buffer (logical canvas) size
         this._fbWidth = 0;
         this._fbHeight = 0;
+        this._rotate = 'rotate';
 
         this._prevDrawStyle = "";
 
@@ -444,13 +445,58 @@ export default class Display {
                 'height': height,
             });
         } else {
-            // NB(directxman12): arr must be an Type Array view
-            let data = new Uint8ClampedArray(arr.buffer,
-                                             arr.byteOffset + offset,
-                                             width * height * 4);
-            let img = new ImageData(data, width, height);
-            this._drawCtx.putImageData(img, x, y);
-            this._damage(x, y, width, height);
+            const img = this._drawCtx.createImageData(width, height);
+            const data = img.data;
+
+            if (this._rotate === 'right') {
+                let j = offset;
+                for (let yv = 0; yv < height; yv++) {
+                    for (let xv = 0; xv < width; xv++) {
+                        let doff = ((xv * height) + (width - yv - 1)) * 4;
+                        data[doff]     = arr[j];
+                        data[doff + 1] = arr[j + 1];
+                        data[doff + 2] = arr[j + 2];
+                        data[doff + 3] = 255;  // Alpha
+                        j += 4;
+                    }
+                }
+            } else if (this._rotate === 'left') {
+                let j = offset;
+                for (let yv = height - 1; yv >= 0; yv--) {
+                    for (let xv = width - 1; xv >= 0; xv--) {
+                        let doff = ((xv * height) + (width - yv - 1)) * 4; //((height - xv - 1) + (width * yv)) * 4;
+                        data[doff]     = arr[j];
+                        data[doff + 1] = arr[j + 1];
+                        data[doff + 2] = arr[j + 2];
+                        data[doff + 3] = 255;  // Alpha
+                        j += 4;
+                    }
+                }
+            } else if (this._rotate === 'double') {
+                let length = width * height * 4;
+                for (let i = 4, j = offset; i <= length; i += 4, j += 4) {
+                    data[length - i]     = arr[j];
+                    data[length - i + 1] = arr[j + 1];
+                    data[length - i + 2] = arr[j + 2];
+                    data[length - i + 3] = 255;  // Alpha
+                }
+            }
+            let x0 = x;
+            let y0 = y;
+            if (this._rotate === 'right') {
+                let a = x0;
+                x0 = this._fbWidth - y0 - 1 - height;
+                y0 = a;
+            } else if (this._rotate === 'left') {
+                let a = y0;
+                y0 = this._fbHeight - x0 - 1 - width;
+                x0 = a;
+            } else if (this._rotate === 'double') {
+                y0 = this._fbHeight - y0 - 1 - height;
+                x0 = this._fbWidth - x0 - 1 - width;
+            }
+            this._drawCtx.putImageData(img, x0, y0);
+            this._damage(x0, y0, img.width, img.height);
         }
     }
 

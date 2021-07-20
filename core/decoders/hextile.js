@@ -105,7 +105,7 @@ export default class HextileDecoder {
                     rQi += 4;
                 }
 
-                this._startTile(tx, ty, tw, th, this._background);
+                this._startTile(tx, ty, tw, th, this._background, display);
                 if (subencoding & 0x08) {  // AnySubrects
                     let subrects = rQ[rQi];
                     rQi++;
@@ -128,7 +128,7 @@ export default class HextileDecoder {
                         const sw = (wh >> 4) + 1;
                         const sh = (wh & 0x0f) + 1;
 
-                        this._subTile(sx, sy, sw, sh, color);
+                        this._subTile(sx, sy, sw, sh, color, display);
                     }
                 }
                 this._finishTile(display);
@@ -142,50 +142,63 @@ export default class HextileDecoder {
     }
 
     // start updating a tile
-    _startTile(x, y, width, height, color) {
+    _startTile(x, y, width, height, color, display) {
         this._tileX = x;
         this._tileY = y;
         this._tileW = width;
         this._tileH = height;
 
-        const red = color[0];
-        const green = color[1];
-        const blue = color[2];
+        if (display._rotate === 'right' || display._rotate === 'left') {
+            display.fillRect(x, y, width, height, color, true);
+        } else {
+            const red = color[0];
+            const green = color[1];
+            const blue = color[2];
 
-        const data = this._tileBuffer;
-        for (let i = 0; i < width * height * 4; i += 4) {
-            data[i]     = red;
-            data[i + 1] = green;
-            data[i + 2] = blue;
-            data[i + 3] = 255;
+            const data = this._tileBuffer;
+            for (let i = 0; i < width * height * 4; i += 4) {
+                data[i]     = red;
+                data[i + 1] = green;
+                data[i + 2] = blue;
+                data[i + 3] = 255;
+            }
         }
     }
 
     // update sub-rectangle of the current tile
-    _subTile(x, y, w, h, color) {
-        const red = color[0];
-        const green = color[1];
-        const blue = color[2];
-        const xend = x + w;
-        const yend = y + h;
+    _subTile(x, y, w, h, color, display) {
+        if (display._rotate === 'right' || display._rotate === 'left') {
+            let x0 = this._tileX + x;
+            let y0 = this._tileY + y;
+            display.fillRect(x0, y0, w, h, color, true);
+        } else {
+            const red = color[0];
+            const green = color[1];
+            const blue = color[2];
+            const xend = x + w;
+            const yend = y + h;
 
-        const data = this._tileBuffer;
-        const width = this._tileW;
-        for (let j = y; j < yend; j++) {
-            for (let i = x; i < xend; i++) {
-                const p = (i + (j * width)) * 4;
-                data[p]     = red;
-                data[p + 1] = green;
-                data[p + 2] = blue;
-                data[p + 3] = 255;
+            const data = this._tileBuffer;
+            const width = this._tileW;
+
+            for (let j = y; j < yend; j++) {
+                for (let i = x; i < xend; i++) {
+                    const p = (i + (j * width)) * 4;
+                    data[p]     = red;
+                    data[p + 1] = green;
+                    data[p + 2] = blue;
+                    data[p + 3] = 255;
+                }
             }
         }
     }
 
     // draw the current tile to the screen
     _finishTile(display) {
-        display.blitImage(this._tileX, this._tileY,
-                          this._tileW, this._tileH,
-                          this._tileBuffer, 0);
+        if (!display._rotate) {
+            display.blitImage(this._tileX, this._tileY,
+                this._tileW, this._tileH,
+                this._tileBuffer, 0);
+        }
     }
 }
