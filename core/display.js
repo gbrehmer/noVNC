@@ -445,10 +445,8 @@ export default class Display {
             });
         } else {
             // NB(directxman12): arr must be an Type Array view
-            let data = new Uint8ClampedArray(arr.buffer,
-                                             arr.byteOffset + offset,
-                                             width * height * 4);
-            let img = new ImageData(data, width, height);
+            const img = this._drawCtx.createImageData(width, height);
+            const data = img.data;
 
             if (this._rotate === 'right') {
                 let j = offset;
