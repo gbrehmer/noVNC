@@ -195,8 +195,10 @@ export default class HextileDecoder {
 
     // draw the current tile to the screen
     _finishTile(display) {
-        display.blitImage(this._tileX, this._tileY,
-                          this._tileW, this._tileH,
-                          this._tileBuffer, 0);
+        if (!this._rotate) {
+            display.blitImage(this._tileX, this._tileY,
+                this._tileW, this._tileH,
+                this._tileBuffer, 0);
+        }
     }
 }
