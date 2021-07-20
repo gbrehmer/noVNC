@@ -158,10 +158,10 @@ export default class HextileDecoder {
 
             const data = this._tileBuffer;
             for (let i = 0; i < width * height * 4; i += 4) {
-              data[i]     = red;
-              data[i + 1] = green;
-              data[i + 2] = blue;
-              data[i + 3] = 255;
+                data[i]     = red;
+                data[i + 1] = green;
+                data[i + 2] = blue;
+                data[i + 3] = 255;
             }
         }
     }
@@ -197,8 +197,8 @@ export default class HextileDecoder {
     _finishTile(display) {
         if (!this._rotate) {
             display.blitImage(this._tileX, this._tileY,
-                this._tileW, this._tileH,
-                this._tileBuffer, 0);
+                              this._tileW, this._tileH,
+                              this._tileBuffer, 0);
         }
     }
 }

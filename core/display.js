@@ -449,8 +449,64 @@ export default class Display {
                                              arr.byteOffset + offset,
                                              width * height * 4);
             let img = new ImageData(data, width, height);
-            this._drawCtx.putImageData(img, x, y);
-            this._damage(x, y, width, height);
+
+            if (this._rotate === 'right') {
+                let j = offset;
+                for (let yv = 0; yv < height; yv++) {
+                    for (let xv = 0; xv < width; xv++) {
+                        let doff = ((xv * height) + (width - yv - 1)) * 4;
+                        data[doff]     = arr[j];
+                        data[doff + 1] = arr[j + 1];
+                        data[doff + 2] = arr[j + 2];
+                        data[doff + 3] = 255;  // Alpha
+                        j += 3;
+                    }
+                }
+            } else if (this._rotate === 'left') {
+                let j = offset;
+                for (let yv = height - 1; yv >= 0; yv--) {
+                    for (let xv = width - 1; xv >= 0; xv--) {
+                        let doff = ((xv * height) + (width - yv - 1)) * 4; //((height - xv - 1) + (width * yv)) * 4;
+                        data[doff]     = arr[j];
+                        data[doff + 1] = arr[j + 1];
+                        data[doff + 2] = arr[j + 2];
+                        data[doff + 3] = 255;  // Alpha
+                        j += 3;
+                    }
+                }
+            } else if (this._rotate === 'double') {
+                let length = width * height * 4;
+                for (let i = 4, j = offset; i <= length; i += 4, j += 3) {
+                    data[length - i]     = arr[j];
+                    data[length - i + 1] = arr[j + 1];
+                    data[length - i + 2] = arr[j + 2];
+                    data[length - i + 3] = 255;  // Alpha
+                }
+            } else {
+                for (let i = 0, j = offset; i < width * height * 4; i += 4, j += 3) {
+                    data[i]     = arr[j];
+                    data[i + 1] = arr[j + 1];
+                    data[i + 2] = arr[j + 2];
+                    data[i + 3] = 255;  // Alpha
+                }
+            }
+            let x0 = x;
+            let y0 = y;
+            if (this._rotate === 'right') {
+                let a = x0;
+                x0 = this._fbWidth - y0 - 1 - height;
+                y0 = a;
+            } else if (this._rotate === 'left') {
+                let a = y0;
+                y0 = this._fbHeight - x0 - 1 - width;
+                x0 = a;
+            } else if (this._rotate === 'double') {
+                y0 = this._fbHeight - y0 - 1 - height;
+                x0 = this._fbWidth - x0 - 1 - width;
+            }
+
+            this._drawCtx.putImageData(img, x0, y0);
+            this._damage(x0, y0, width, height);
         }
     }
 
