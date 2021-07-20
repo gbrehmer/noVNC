@@ -445,8 +445,16 @@ export default class Display {
                 'height': height,
             });
         } else {
-            const img = this._drawCtx.createImageData(width, height);
-            const data = img.data;
+
+            let data = null;
+            if (!this._rotate) {
+                data = new Uint8ClampedArray(arr.buffer,
+                    arr.byteOffset + offset,
+                    width * height * 4);
+            } else {
+                data = new Uint8ClampedArray(4 * width * height);
+            }
+            let img = new ImageData(data, width, height);
 
             if (this._rotate === 'right') {
                 let j = offset;
