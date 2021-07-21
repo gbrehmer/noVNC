@@ -448,8 +448,8 @@ export default class Display {
                 data = new Uint8ClampedArray(4 * width * height);
             } else {
                 data = new Uint8ClampedArray(arr.buffer,
-                    arr.byteOffset + offset,
-                    width * height * 4);
+                                             arr.byteOffset + offset,
+                                             width * height * 4);
             }
             let img = new ImageData(data, width, height);
 

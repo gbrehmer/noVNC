@@ -197,8 +197,8 @@ export default class HextileDecoder {
     _finishTile(display) {
         if (!display._rotate) {
             display.blitImage(this._tileX, this._tileY,
-                this._tileW, this._tileH,
-                this._tileBuffer, 0);
+                              this._tileW, this._tileH,
+                              this._tileBuffer, 0);
         }
     }
 }
