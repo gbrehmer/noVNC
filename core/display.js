@@ -20,7 +20,7 @@ export default class Display {
         // the full frame buffer (logical canvas) size
         this._fbWidth = 0;
         this._fbHeight = 0;
-        this._rotate = 'rotate';
+        this._rotate = rotate;
 
         this._prevDrawStyle = "";
 
@@ -63,8 +63,6 @@ export default class Display {
                 bottom: this._backbuffer.height
             };
         }
-
-        Log.Debug("User Agent: " + navigator.userAgent);
 
         Log.Debug("<< Display.constructor");
 
@@ -445,14 +443,13 @@ export default class Display {
                 'height': height,
             });
         } else {
-
             let data = null;
-            if (!this._rotate) {
+            if (this._rotate === 'left' || this._rotate === 'right') {
+                data = new Uint8ClampedArray(4 * width * height);
+            } else {
                 data = new Uint8ClampedArray(arr.buffer,
                     arr.byteOffset + offset,
                     width * height * 4);
-            } else {
-                data = new Uint8ClampedArray(4 * width * height);
             }
             let img = new ImageData(data, width, height);
 

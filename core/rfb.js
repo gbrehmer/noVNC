@@ -92,6 +92,7 @@ export default class RFB extends EventTargetMixin {
         this._shared = 'shared' in options ? !!options.shared : true;
         this._repeaterID = options.repeaterID || '';
         this._wsProtocols = options.wsProtocols || [];
+        this._rotate = options.rotate || null;
 
         // Internal state
         this._rfbConnectionState = '';
@@ -105,7 +106,6 @@ export default class RFB extends EventTargetMixin {
         this._rfbTightVNC = false;
         this._rfbVeNCryptState = 0;
         this._rfbXvpVer = 0;
-        this._rotate = '';
         this._scale = false;
 
         this._fbWidth = 0;
